@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+    color: #0a1a3f;
+    background-color: #f2f9ff;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  code,
+  pre,
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+}
+
+.comic-frame {
+  border: 2px solid #0a1a3f;
+  box-shadow: 4px 4px 0px #0a1a3f;
+}
+
+.comic-frame-sm {
+  border: 2px solid #0a1a3f;
+  box-shadow: 3px 3px 0px #0a1a3f;
+}
+
+.comic-btn {
+  border: 2px solid #0a1a3f;
+  box-shadow: 3px 3px 0px #0a1a3f;
+  transition:
+    transform 140ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 140ms cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 140ms ease;
+}
+
+.comic-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px #0a1a3f;
+}
+
+.comic-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px #0a1A3f;
+}
+
+.sky-halftone-bg {
+  background-color: #f2f9ff;
+  background-image: radial-gradient(rgba(18, 80, 232, 0.085) 1.25px, transparent 1.25px);
+  background-size: 20px 20px;
+}
+
+.comic-speed-stripes {
+  background-image: repeating-linear-gradient(
+    -18deg,
+    rgba(255, 255, 255, 0.45),
+    rgba(255, 255, 255, 0.45) 10px,
+    transparent 10px,
+    transparent 24px
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .comic-btn,
+  .comic-btn:hover,
+  .comic-btn:active {
+    transition: none;
+    transform: none;
+  }
+}

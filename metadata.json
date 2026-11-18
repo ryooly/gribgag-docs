@@ -1,0 +1,6 @@
+{
+  "name": "GribGag Docs",
+  "description": "Official knowledge base, product mechanics, payout rails, and developer documentation for GribGag.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
