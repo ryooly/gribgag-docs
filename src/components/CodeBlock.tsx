@@ -31,9 +31,9 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({ tabs }) => {
   const lines = activeTab.code.split('\n');
 
   return (
-    <div className="comic-frame-sm rounded-xl overflow-hidden bg-[#0A1A3F] text-slate-100 my-5">
-      <div className="flex items-center justify-between gap-4 px-4 py-2.5 bg-[#071330] border-b border-white/15">
-        <div className="flex items-center gap-1.5 overflow-x-auto">
+    <div className="comic-frame-sm rounded-xl overflow-hidden bg-[#0A1A3F] text-slate-100 my-5 min-w-0 max-w-full">
+      <div className="flex items-center justify-between gap-2 sm:gap-4 px-3 sm:px-4 py-2.5 bg-[#071330] border-b border-white/15">
+        <div className="flex items-center gap-1.5 overflow-x-auto min-w-0">
           {tabs.map((tab, idx) => {
             const active = idx === activeIdx;
             return (
@@ -44,7 +44,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({ tabs }) => {
                   setActiveIdx(idx);
                   setCopied(false);
                 }}
-                className={`px-3 py-1 rounded-md text-xs font-semibold whitespace-nowrap shrink-0 transition-colors cursor-pointer ${
+                className={`px-3 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap shrink-0 transition-colors cursor-pointer ${
                   active
                     ? 'bg-[#1250E8] text-white'
                     : 'text-sky-200/75 hover:text-white hover:bg-white/10'
@@ -60,7 +60,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({ tabs }) => {
           type="button"
           onClick={handleCopy}
           aria-label="Copy code snippet"
-          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium text-sky-100 hover:bg-white/10 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium text-sky-100 hover:bg-white/10 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
         >
           {copied ? (
             <>

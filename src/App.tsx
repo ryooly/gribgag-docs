@@ -54,11 +54,10 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F2F9FF] text-[#0A1A3F]">
+    <div className="min-h-screen flex flex-col bg-[#F2F9FF] text-[#0A1A3F] overflow-x-clip">
       <TopBar
         activeArticleId={activeArticleId}
         onSelectArticle={(id) => handleSelectArticle(id, true)}
-        onOpenSearch={() => setSearchOpen(true)}
         onToggleMobileNav={() => setMobileNavOpen((prev) => !prev)}
       />
 
@@ -68,6 +67,8 @@ export default function App() {
         <DocsWorkspace
           activeArticleId={activeArticleId}
           onSelectArticle={(id) => handleSelectArticle(id, true)}
+          onOpenSearch={() => setSearchOpen(true)}
+          onOpenMobileNav={() => setMobileNavOpen(true)}
           mobileNavOpen={mobileNavOpen}
           onCloseMobileNav={() => setMobileNavOpen(false)}
         />
@@ -80,11 +81,19 @@ export default function App() {
               GribGag Knowledge Base
             </div>
             <p className="text-xs text-[#475569] mt-0.5">
-              © 2026 GribGag. Product documentation, reward rules, and SDK specifications.
+              © 2026 GribGag. Product documentation, reward rules, and knowledge base.
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-5 text-xs font-semibold text-[#334155]">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2.5 text-xs font-semibold text-[#334155]">
+            <a
+              href="https://t.me/GrabGig_bot"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#1250E8] hover:underline font-bold"
+            >
+              Telegram Bot
+            </a>
             <button
               type="button"
               onClick={() => handleSelectArticle('overview', true)}

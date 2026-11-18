@@ -96,7 +96,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 px-4"
+      className="fixed inset-0 z-50 flex items-start justify-center pt-6 sm:pt-24 px-3 sm:px-4"
       role="dialog"
       aria-modal="true"
       aria-label="Search GribGag documentation"
@@ -107,7 +107,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
       />
 
       <div className="relative w-full max-w-2xl bg-white comic-frame rounded-2xl overflow-hidden z-10">
-        <div className="flex items-center gap-3 px-4 py-3.5 border-b-2 border-[#0A1A3F] bg-[#F2F9FF]">
+        <div className="flex items-center gap-2.5 sm:gap-3 px-3.5 sm:px-4 py-3 border-b-2 border-[#0A1A3F] bg-[#F2F9FF]">
           <Search className="w-5 h-5 text-[#1250E8] shrink-0" aria-hidden="true" />
           <input
             ref={inputRef}
@@ -117,24 +117,24 @@ export const SearchModal: React.FC<SearchModalProps> = ({
               setQuery(e.target.value);
               setActiveIndex(0);
             }}
-            placeholder="Search guides, payout rails, API endpoints, streaks..."
-            className="w-full bg-transparent text-sm sm:text-base text-[#0A1A3F] placeholder:text-[#64748B] focus:outline-none"
+            placeholder="Search guides, payout rails, streaks, FAQ..."
+            className="w-full min-w-0 bg-transparent text-sm sm:text-base text-[#0A1A3F] placeholder:text-[#64748B] focus:outline-none"
           />
           <button
             type="button"
             onClick={onClose}
             aria-label="Close search"
-            className="w-8 h-8 inline-flex items-center justify-center rounded-lg border border-[#0A1A3F]/20 bg-white text-[#0A1A3F] hover:bg-[#E0F2FE] cursor-pointer"
+            className="w-10 h-10 shrink-0 inline-flex items-center justify-center rounded-lg border border-[#0A1A3F]/20 bg-white text-[#0A1A3F] hover:bg-[#E0F2FE] cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        <div className="max-h-[60vh] overflow-y-auto divide-y divide-[#0A1A3F]/10">
+        <div className="max-h-[68vh] sm:max-h-[60vh] overflow-y-auto divide-y divide-[#0A1A3F]/10">
           {results.length === 0 ? (
             <div className="p-8 text-center text-sm text-[#475569]">
               No documentation entries matched &ldquo;{query}&rdquo;. Try searching for
-              &ldquo;payout&rdquo;, &ldquo;streak&rdquo;, &ldquo;webhook&rdquo;, or
+              &ldquo;payout&rdquo;, &ldquo;streak&rdquo;, &ldquo;anti-fraud&rdquo;, or
               &ldquo;quickstart&rdquo;.
             </div>
           ) : (

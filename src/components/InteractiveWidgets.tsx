@@ -1,13 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Check, ChevronDown, Clock, Copy, RotateCcw, Zap } from 'lucide-react';
 import {
-  API_ENDPOINTS,
   BRAND_SWATCHES,
   FAQ_ITEMS,
   LIFECYCLE_STAGES,
   PAYOUT_RAILS,
 } from '../data/docsData';
-import { CodeBlock } from './CodeBlock';
 import { ActionSparksSvg, SpeedStopwatchSvg, SwirlEmblemSvg } from './ComicArt';
 
 const QUEST_STEPS = [
@@ -65,20 +63,20 @@ export const PhoneQuestSimulator: React.FC = () => {
   const currentPrompt = QUEST_STEPS[stepIdx] ?? QUEST_STEPS[0];
 
   return (
-    <div className="my-6 comic-frame rounded-2xl bg-gradient-to-br from-[#E0F4FF] via-[#F2F9FF] to-[#BAE6FD] p-5 sm:p-7 relative overflow-hidden">
+    <div className="my-6 comic-frame rounded-2xl bg-gradient-to-br from-[#E0F4FF] via-[#F2F9FF] to-[#BAE6FD] p-4 sm:p-7 relative overflow-hidden">
       <div aria-hidden="true" className="absolute inset-0 comic-speed-stripes opacity-40 pointer-events-none" />
 
-      <div className="relative grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+      <div className="relative grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-6 items-center">
         {/* Left: Comic Smartphone Frame matching mascot's phone */}
-        <div className="md:col-span-6 flex justify-center">
-          <div className="relative">
+        <div className="md:col-span-6 flex justify-center min-w-0">
+          <div className="relative w-full max-w-[270px]">
             {phase === 'done' && (
-              <div className="absolute -top-6 -right-5 z-10 pointer-events-none">
-                <ActionSparksSvg className="w-14 h-9 rotate-12" />
+              <div className="absolute -top-5 -right-2 sm:-right-4 z-10 pointer-events-none">
+                <ActionSparksSvg className="w-12 h-8 sm:w-14 sm:h-9 rotate-12" />
               </div>
             )}
 
-            <div className="w-[270px] rounded-[28px] bg-[#0A1A3F] p-2.5 shadow-[6px_6px_0px_#0A1A3F] border-2 border-[#0A1A3F]">
+            <div className="w-full rounded-[28px] bg-[#0A1A3F] p-2.5 shadow-[6px_6px_0px_#0A1A3F] border-2 border-[#0A1A3F]">
               {/* Speaker notch */}
               <div className="w-16 h-1.5 bg-slate-700 rounded-full mx-auto mb-2" />
 
@@ -228,7 +226,7 @@ export const EarningLifecycleExplorer: React.FC = () => {
   const activeStage = LIFECYCLE_STAGES[selectedStep] ?? LIFECYCLE_STAGES[0];
 
   return (
-    <div className="my-6 comic-frame-sm rounded-2xl bg-white overflow-hidden">
+    <div className="my-6 comic-frame-sm rounded-2xl bg-white overflow-hidden min-w-0">
       <div className="grid grid-cols-2 sm:grid-cols-4 border-b-2 border-[#0A1A3F] bg-[#E6F3FF]">
         {LIFECYCLE_STAGES.map((stage, idx) => {
           const isActive = idx === selectedStep;
@@ -237,7 +235,11 @@ export const EarningLifecycleExplorer: React.FC = () => {
               key={stage.step}
               type="button"
               onClick={() => setSelectedStep(idx)}
-              className={`px-4 py-3.5 text-left transition-colors cursor-pointer border-r border-b sm:border-b-0 last:border-r-0 border-[#0A1A3F]/15 focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-[#1250E8] ${
+              className={`px-3.5 sm:px-4 py-3.5 text-left transition-colors cursor-pointer border-[#0A1A3F]/15 focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-[#1250E8] ${
+                idx < 2 ? 'border-b sm:border-b-0' : ''
+              } ${idx % 2 === 0 ? 'border-r' : ''} ${
+                idx < 3 ? 'sm:border-r' : 'sm:border-r-0'
+              } ${
                 isActive
                   ? 'bg-[#1250E8] text-white'
                   : 'bg-transparent text-[#0A1A3F] hover:bg-[#D5ECFF]'
@@ -254,8 +256,8 @@ export const EarningLifecycleExplorer: React.FC = () => {
         })}
       </div>
 
-      <div className="p-5 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        <div className="lg:col-span-6 space-y-3">
+      <div className="p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-start">
+        <div className="lg:col-span-6 space-y-3 min-w-0">
           <div className="flex items-center gap-2 text-xs font-semibold text-[#1250E8]">
             <Clock className="w-4 h-4 shrink-0" aria-hidden="true" />
             <span>
@@ -273,9 +275,9 @@ export const EarningLifecycleExplorer: React.FC = () => {
           </div>
         </div>
 
-        <div className="lg:col-span-6">
+        <div className="lg:col-span-6 min-w-0">
           <div className="text-xs font-semibold text-[#475569] mb-2">Sample Event Payload</div>
-          <pre className="p-4 rounded-xl bg-[#0A1A3F] text-sky-50 text-xs font-mono leading-relaxed overflow-x-auto border border-[#0A1A3F]">
+          <pre className="p-3.5 sm:p-4 rounded-xl bg-[#0A1A3F] text-sky-50 text-xs font-mono leading-relaxed overflow-x-auto border border-[#0A1A3F] max-w-full">
             {activeStage.payload}
           </pre>
         </div>
@@ -321,9 +323,9 @@ export const StreakRewardCalculator: React.FC = () => {
   }, [baseReward, streakDays, fastCompletion]);
 
   return (
-    <div className="my-6 comic-frame-sm rounded-2xl bg-white p-5 sm:p-6">
+    <div className="my-6 comic-frame-sm rounded-2xl bg-white p-4 sm:p-6 min-w-0">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        <div className="lg:col-span-7 space-y-5">
+        <div className="lg:col-span-7 space-y-5 min-w-0">
           <div>
             <div className="flex items-center justify-between text-sm font-semibold text-[#0A1A3F] mb-2">
               <label htmlFor="base-reward-slider">Base Quest Reward</label>
@@ -339,7 +341,7 @@ export const StreakRewardCalculator: React.FC = () => {
               step="0.05"
               value={baseReward}
               onChange={(e) => setBaseReward(Number(e.target.value))}
-              className="w-full accent-[#1250E8] cursor-pointer"
+              className="w-full h-6 accent-[#1250E8] cursor-pointer"
             />
             <div className="flex justify-between text-[11px] font-mono tabular-nums text-[#64748B] mt-1">
               <span>$0.10</span>
@@ -349,7 +351,7 @@ export const StreakRewardCalculator: React.FC = () => {
           </div>
 
           <div>
-            <div className="flex items-center justify-between text-sm font-semibold text-[#0A1A3F] mb-2">
+            <div className="flex flex-wrap items-center justify-between gap-2 text-sm font-semibold text-[#0A1A3F] mb-2">
               <label htmlFor="streak-days-slider">Active Daily Streak</label>
               <span className="font-mono tabular-nums text-[#1250E8]">
                 {streakDays} {streakDays === 1 ? 'day' : 'days'} ({calculation.tierName})
@@ -363,17 +365,17 @@ export const StreakRewardCalculator: React.FC = () => {
               step="1"
               value={streakDays}
               onChange={(e) => setStreakDays(Number(e.target.value))}
-              className="w-full accent-[#1250E8] cursor-pointer"
+              className="w-full h-6 accent-[#1250E8] cursor-pointer"
             />
-            <div className="flex justify-between text-[11px] font-mono tabular-nums text-[#64748B] mt-1">
-              <span>Day 1 (1.00x)</span>
-              <span>Day 7 (1.25x)</span>
-              <span>Day 14 (1.40x)</span>
-              <span>Day 30+ (1.60x)</span>
+            <div className="grid grid-cols-4 gap-1 text-[10px] sm:text-[11px] font-mono tabular-nums text-[#64748B] mt-1">
+              <span>Day 1</span>
+              <span className="text-center">Day 7</span>
+              <span className="text-center">Day 14</span>
+              <span className="text-right">Day 30+</span>
             </div>
           </div>
 
-          <div className="flex items-center justify-between gap-4 pt-1">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
             <div>
               <div className="text-sm font-semibold text-[#0A1A3F]">Sub-30s Speed Bonus</div>
               <div className="text-xs text-[#475569]">
@@ -385,7 +387,7 @@ export const StreakRewardCalculator: React.FC = () => {
               role="switch"
               aria-checked={fastCompletion}
               onClick={() => setFastCompletion((v) => !v)}
-              className={`px-3.5 py-2 rounded-lg text-xs font-bold border-2 border-[#0A1A3F] transition-colors cursor-pointer whitespace-nowrap shrink-0 ${
+              className={`px-3.5 py-2.5 min-h-[44px] rounded-lg text-xs font-bold border-2 border-[#0A1A3F] transition-colors cursor-pointer whitespace-nowrap shrink-0 self-start sm:self-auto ${
                 fastCompletion
                   ? 'bg-[#FACC15] text-[#0A1A3F]'
                   : 'bg-[#F2F9FF] text-[#475569]'
@@ -396,7 +398,7 @@ export const StreakRewardCalculator: React.FC = () => {
           </div>
         </div>
 
-        <div className="lg:col-span-5 rounded-xl bg-[#0A1A3F] text-white p-5 space-y-4">
+        <div className="lg:col-span-5 rounded-xl bg-[#0A1A3F] text-white p-5 space-y-4 min-w-0">
           <div className="text-xs font-semibold text-[#22D3EE]">Calculated Settlement</div>
 
           <div className="pb-4 border-b border-white/15">
@@ -448,7 +450,7 @@ export const PayoutRailsTable: React.FC = () => {
   ];
 
   return (
-    <div className="my-6 comic-frame-sm rounded-2xl bg-white overflow-hidden">
+    <div className="my-6 comic-frame-sm rounded-2xl bg-white overflow-hidden min-w-0 max-w-full">
       <div className="px-4 sm:px-5 py-3.5 bg-[#E6F3FF] border-b-2 border-[#0A1A3F] flex flex-wrap items-center justify-between gap-3">
         <span className="text-xs font-bold text-[#0A1A3F]">Filter by Payout Category</span>
         <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label="Payout category filter">
@@ -459,7 +461,7 @@ export const PayoutRailsTable: React.FC = () => {
                 key={cat}
                 type="button"
                 onClick={() => setFilter(cat)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+                className={`px-3 py-2 rounded-lg text-xs font-semibold transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                   active
                     ? 'bg-[#1250E8] text-white'
                     : 'bg-white text-[#334155] border border-[#0A1A3F]/20 hover:border-[#0A1A3F]'
@@ -472,7 +474,7 @@ export const PayoutRailsTable: React.FC = () => {
         </div>
       </div>
 
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto max-w-full">
         <table className="w-full text-left border-collapse text-sm">
           <thead>
             <tr className="border-b border-[#0A1A3F]/15 bg-[#F8FBFF] text-xs font-bold text-[#475569]">
@@ -507,80 +509,6 @@ export const PayoutRailsTable: React.FC = () => {
             ))}
           </tbody>
         </table>
-      </div>
-    </div>
-  );
-};
-
-export const ApiEndpointExplorer: React.FC = () => {
-  const [selectedId, setSelectedId] = useState(API_ENDPOINTS[0].id);
-  const endpoint = API_ENDPOINTS.find((e) => e.id === selectedId) ?? API_ENDPOINTS[0];
-
-  return (
-    <div className="my-6 comic-frame-sm rounded-2xl bg-white overflow-hidden">
-      <div className="p-3 bg-[#E6F3FF] border-b-2 border-[#0A1A3F] flex flex-wrap gap-2">
-        {API_ENDPOINTS.map((item) => {
-          const active = item.id === endpoint.id;
-          return (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => setSelectedId(item.id)}
-              className={`px-3 py-2 rounded-lg text-xs font-mono font-semibold transition-colors cursor-pointer whitespace-nowrap shrink-0 ${
-                active
-                  ? 'bg-[#0A1A3F] text-white'
-                  : 'bg-white text-[#0A1A3F] border border-[#0A1A3F]/20 hover:border-[#0A1A3F]'
-              }`}
-            >
-              <span className={active ? 'text-[#22D3EE]' : 'text-[#1250E8]'}>{item.method}</span>{' '}
-              <span>{item.path}</span>
-            </button>
-          );
-        })}
-      </div>
-
-      <div className="p-5 sm:p-6 space-y-5">
-        <div>
-          <div className="text-xs font-mono font-semibold text-[#1250E8] mb-1">
-            {endpoint.method} · {endpoint.path}
-          </div>
-          <h4 className="font-display text-xl font-bold text-[#0A1A3F] mb-1.5">
-            {endpoint.title}
-          </h4>
-          <p className="text-sm text-[#334155]">{endpoint.description}</p>
-        </div>
-
-        <div className="overflow-x-auto border border-[#0A1A3F]/15 rounded-xl">
-          <table className="w-full text-left border-collapse text-xs sm:text-sm">
-            <thead>
-              <tr className="bg-[#F8FBFF] border-b border-[#0A1A3F]/15 font-bold text-[#475569]">
-                <th className="py-2.5 px-3.5">Parameter</th>
-                <th className="py-2.5 px-3.5">Type</th>
-                <th className="py-2.5 px-3.5">Required</th>
-                <th className="py-2.5 px-3.5">Description</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[#0A1A3F]/10">
-              {endpoint.params.map((p) => (
-                <tr key={p.name}>
-                  <td className="py-2.5 px-3.5 font-mono font-semibold text-[#0A1A3F]">
-                    {p.name}
-                  </td>
-                  <td className="py-2.5 px-3.5 font-mono text-[#1250E8]">{p.type}</td>
-                  <td className="py-2.5 px-3.5 font-semibold text-[#334155]">{p.required}</td>
-                  <td className="py-2.5 px-3.5 text-[#334155]">{p.note}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        <CodeBlock
-          tabs={[
-            { label: 'Request / Verify', language: 'bash', code: endpoint.requestExample },
-            { label: '200 Response / Event', language: 'json', code: endpoint.responseExample },
-          ]}
-        />
       </div>
     </div>
   );
@@ -656,7 +584,7 @@ export const FaqAccordion: React.FC = () => {
   const [openId, setOpenId] = useState<string>(FAQ_ITEMS[0].id);
   const [category, setCategory] = useState<string>('All');
 
-  const categories = ['All', 'Users & Earnings', 'Streaks & Multipliers', 'Payouts & Ledger', 'Developers & Partners'];
+  const categories = ['All', 'Users & Earnings', 'Streaks & Multipliers', 'Payouts & Ledger'];
 
   const visibleFaqs = useMemo(() => {
     if (category === 'All') return FAQ_ITEMS;
@@ -664,7 +592,7 @@ export const FaqAccordion: React.FC = () => {
   }, [category]);
 
   return (
-    <div className="my-6 space-y-4">
+    <div className="my-6 space-y-4 min-w-0 max-w-full">
       <div className="flex flex-wrap gap-1.5" role="group" aria-label="FAQ topic filter">
         {categories.map((cat) => {
           const active = category === cat;
@@ -673,7 +601,7 @@ export const FaqAccordion: React.FC = () => {
               key={cat}
               type="button"
               onClick={() => setCategory(cat)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+              className={`px-3 py-2 rounded-lg text-xs font-semibold border transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                 active
                   ? 'bg-[#1250E8] text-white border-[#0A1A3F]'
                   : 'bg-white text-[#334155] border-[#0A1A3F]/20 hover:border-[#0A1A3F]'
@@ -694,7 +622,7 @@ export const FaqAccordion: React.FC = () => {
                 type="button"
                 aria-expanded={isOpen}
                 onClick={() => setOpenId(isOpen ? '' : item.id)}
-                className="w-full px-5 py-4 flex items-center justify-between gap-4 text-left hover:bg-[#F2F9FF] transition-colors cursor-pointer"
+                className="w-full px-4 sm:px-5 py-4 flex items-center justify-between gap-4 text-left hover:bg-[#F2F9FF] transition-colors cursor-pointer"
               >
                 <div>
                   <div className="text-xs font-semibold text-[#1250E8] mb-0.5">
@@ -712,7 +640,7 @@ export const FaqAccordion: React.FC = () => {
                 />
               </button>
               {isOpen && (
-                <div className="px-5 pb-5 pt-1 text-sm leading-relaxed text-[#334155] bg-[#F8FBFF]">
+                <div className="px-4 sm:px-5 pb-5 pt-1 text-sm leading-relaxed text-[#334155] bg-[#F8FBFF]">
                   {item.answer}
                 </div>
               )}

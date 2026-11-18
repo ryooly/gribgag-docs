@@ -2,7 +2,6 @@ export type DocCategoryId =
   | 'getting-started'
   | 'mechanics'
   | 'payouts-trust'
-  | 'developers'
   | 'reference';
 
 export interface DocHeading {
@@ -38,7 +37,6 @@ export interface DocSectionBlock {
     | 'phone-simulator'
     | 'streak-calculator'
     | 'payout-rails'
-    | 'api-explorer'
     | 'brand-swatches'
     | 'faq-accordion';
 }
@@ -66,15 +64,14 @@ export const DOC_CATEGORIES: DocCategory[] = [
   { id: 'getting-started', title: '01. Getting Started', order: '01' },
   { id: 'mechanics', title: '02. Earning & Streaks', order: '02' },
   { id: 'payouts-trust', title: '03. Payouts & Trust', order: '03' },
-  { id: 'developers', title: '04. SDK & API Reference', order: '04' },
-  { id: 'reference', title: '05. Brand & Support', order: '05' },
+  { id: 'reference', title: '04. Brand & Support', order: '04' },
 ];
 
 export const HERO_METRICS = [
   { label: 'Average Quest Time', value: '42 sec', context: 'Under 1-minute cap' },
   { label: 'Verification Latency', value: '680 ms', context: 'Median edge settle' },
   { label: 'Instant Payout Rails', value: '6 Rails', context: 'Zero hidden fees' },
-  { label: 'Client SDK Footprint', value: '14.2 kB', context: 'Minified & gzipped' },
+  { label: 'Daily Streak Boost', value: 'Up to 2.0x', context: '30-day multiplier' },
 ];
 
 export const LIFECYCLE_STAGES = [
@@ -207,138 +204,6 @@ export const PAYOUT_RAILS: PayoutRail[] = [
   },
 ];
 
-export interface ApiEndpointSpec {
-  id: string;
-  method: 'POST' | 'GET' | 'WEBHOOK';
-  path: string;
-  title: string;
-  description: string;
-  params: { name: string; type: string; required: string; note: string }[];
-  requestExample: string;
-  responseExample: string;
-}
-
-export const API_ENDPOINTS: ApiEndpointSpec[] = [
-  {
-    id: 'claim-quest',
-    method: 'POST',
-    path: '/v1/quests/claim',
-    title: 'Claim & Verify Quest Completion',
-    description:
-      'Submits a user’s sub-minute quest payload for immediate edge verification and ledger credit.',
-    params: [
-      { name: 'userId', type: 'string', required: 'Yes', note: 'Canonical GribGag user identifier' },
-      { name: 'questId', type: 'string', required: 'Yes', note: 'Active quest or daily gag ID' },
-      { name: 'elapsedMs', type: 'number', required: 'Yes', note: 'Client measured duration (2500–60000)' },
-      { name: 'attestationToken', type: 'string', required: 'Yes', note: 'Signed device integrity token' },
-    ],
-    requestExample: `curl -X POST https://api.gribgag.com/v1/quests/claim \\
-  -H "Authorization: Bearer gg_live_9481a2f" \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "userId": "usr_duck_771",
-    "questId": "gag_poll_204",
-    "elapsedMs": 28400,
-    "attestationToken": "att_eyJhbGciOiJFUzI1NiJ9..."
-  }'`,
-    responseExample: `{
-  "status": "settled",
-  "claimId": "clm_991204b",
-  "baseRewardCents": 40,
-  "streakMultiplier": 1.25,
-  "totalCreditedCents": 50,
-  "newBalanceCents": 650,
-  "verifiedInMs": 612
-}`,
-  },
-  {
-    id: 'get-balance',
-    method: 'GET',
-    path: '/v1/users/{id}/balance',
-    title: 'Fetch User Balance & Streak State',
-    description:
-      'Retrieves current withdrawable funds, pending holds, and active daily streak multiplier.',
-    params: [
-      { name: 'id', type: 'path string', required: 'Yes', note: 'Target user ID in URL path' },
-      { name: 'includeHistory', type: 'boolean', required: 'No', note: 'Include last 10 ledger entries' },
-    ],
-    requestExample: `curl -X GET "https://api.gribgag.com/v1/users/usr_duck_771/balance?includeHistory=false" \\
-  -H "Authorization: Bearer gg_live_9481a2f"`,
-    responseExample: `{
-  "userId": "usr_duck_771",
-  "availableCents": 650,
-  "pendingCents": 0,
-  "streakDays": 7,
-  "activeMultiplier": 1.25,
-  "nextStreakResetUtc": "2026-11-18T00:00:00Z"
-}`,
-  },
-  {
-    id: 'initiate-payout',
-    method: 'POST',
-    path: '/v1/payouts/initiate',
-    title: 'Initiate Instant Payout',
-    description:
-      'Dispatches an immediate transfer over the user’s selected payout rail with idempotency protection.',
-    params: [
-      { name: 'userId', type: 'string', required: 'Yes', note: 'User requesting withdrawal' },
-      { name: 'rail', type: 'enum', required: 'Yes', note: 'rtp | paypal | venmo | topup | giftcards | usdc' },
-      { name: 'amountCents', type: 'number', required: 'Yes', note: 'Must meet rail minimum threshold' },
-      { name: 'idempotencyKey', type: 'string', required: 'Yes', note: 'Unique UUID v4 per tap' },
-    ],
-    requestExample: `curl -X POST https://api.gribgag.com/v1/payouts/initiate \\
-  -H "Authorization: Bearer gg_live_9481a2f" \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "userId": "usr_duck_771",
-    "rail": "paypal",
-    "amountCents": 500,
-    "idempotencyKey": "4e6f1c20-8a11-4b33-9b0f-11a72d9b814e"
-  }'`,
-    responseExample: `{
-  "payoutId": "pay_004819x",
-  "rail": "paypal",
-  "amountCents": 500,
-  "feeCents": 0,
-  "status": "dispatched",
-  "estimatedArrivalSec": 18
-}`,
-  },
-  {
-    id: 'webhook-event',
-    method: 'WEBHOOK',
-    path: 'quest.completed',
-    title: 'Signed Settlement Webhook',
-    description:
-      'Sent to your configured HTTPS endpoint immediately after a quest passes edge verification.',
-    params: [
-      { name: 'X-GribGag-Signature', type: 'header', required: 'Signed', note: 'HMAC-SHA256 hex digest of raw body' },
-      { name: 'X-GribGag-Timestamp', type: 'header', required: 'Signed', note: 'Unix epoch seconds (reject >300s drift)' },
-    ],
-    requestExample: `// Verify signature in Node.js / Express
-import crypto from 'node:crypto';
-
-export function verifyWebhook(rawBody: string, sig: string, secret: string) {
-  const expected = crypto
-    .createHmac('sha256', secret)
-    .update(rawBody)
-    .digest('hex');
-  return crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected));
-}`,
-    responseExample: `{
-  "id": "evt_7721094",
-  "type": "quest.completed",
-  "createdAt": "2026-11-17T18:22:09Z",
-  "data": {
-    "userId": "usr_duck_771",
-    "questId": "gag_poll_204",
-    "creditedCents": 50,
-    "completionSec": 28.4
-  }
-}`,
-  },
-];
-
 export const BRAND_SWATCHES = [
   {
     name: 'Electric Cobalt',
@@ -406,13 +271,6 @@ export const FAQ_ITEMS = [
     question: 'Why was my instant cashout held for manual review?',
     answer:
       'Over 99.2% of withdrawals settle in under 45 seconds. Temporary holds only trigger when an account switches payout destination immediately after a velocity spike or logs in from a flagged emulator environment. Verified reviews clear within 4 hours.',
-  },
-  {
-    id: 'faq-5',
-    category: 'Developers & Partners',
-    question: 'Can third-party apps embed the GribGag 60-second Quest Widget?',
-    answer:
-      'Yes. Partner apps can initialize the @gribgag/sdk package in React Native, iOS, Android, or WebView environments. Settlements emit signed HMAC-SHA256 webhooks so your backend can credit in-app currency or cash balances immediately.',
   },
 ];
 
@@ -735,41 +593,9 @@ curl -X POST "https://api.gribgag.com/v1/quests/claim" \\
     ],
   },
   {
-    id: 'api-reference',
-    category: 'developers',
-    chapterNumber: '06',
-    title: 'REST API & Signed Webhooks',
-    summary:
-      'Interactive endpoint reference for claiming quests, checking streak balances, initiating payouts, and verifying HMAC-SHA256 webhooks.',
-    readTime: '6 min read',
-    updatedAt: 'Updated November 2026',
-    keywords: ['api', 'rest', 'endpoints', 'webhooks', 'hmac', 'json', 'post', 'get'],
-    headings: [
-      { id: 'base-url', label: 'Base URL & Authentication' },
-      { id: 'endpoint-explorer', label: 'Interactive Endpoint Explorer' },
-    ],
-    sections: [
-      {
-        id: 'base-url',
-        title: 'Base URL & Authentication',
-        paragraphs: [
-          'All server-to-server requests target https://api.gribgag.com over TLS 1.3 and authenticate via Bearer token in the Authorization header. Responses use standard HTTP status codes and deterministic JSON error envelopes.',
-        ],
-      },
-      {
-        id: 'endpoint-explorer',
-        title: 'Interactive Endpoint Explorer',
-        paragraphs: [
-          'Select an endpoint or webhook event below to inspect required parameters, copy cURL requests, and review JSON settlement payloads.',
-        ],
-        widget: 'api-explorer',
-      },
-    ],
-  },
-  {
     id: 'brand-mascot',
     category: 'reference',
-    chapterNumber: '07',
+    chapterNumber: '06',
     title: 'Mascot, Palette & Visual Identity',
     summary:
       'Official design tokens, color palette, typography, and mascot usage guidelines drawn directly from the GribGag visual universe.',
@@ -815,10 +641,10 @@ curl -X POST "https://api.gribgag.com/v1/quests/claim" \\
   {
     id: 'faq',
     category: 'reference',
-    chapterNumber: '08',
+    chapterNumber: '07',
     title: 'Knowledge Base & Troubleshooting FAQ',
     summary:
-      'Answers to the most common operational, user-support, and developer integration questions across GribGag.',
+      'Answers to the most common operational, payout, and streak protection questions across GribGag.',
     readTime: '3 min read',
     updatedAt: 'Updated November 2026',
     keywords: ['faq', 'help', 'troubleshooting', 'support', 'streak freeze', 'hold'],

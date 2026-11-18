@@ -1,10 +1,9 @@
 import React from 'react';
-import { Menu, Search } from 'lucide-react';
+import { Menu, Send } from 'lucide-react';
 
 interface TopBarProps {
   activeArticleId: string;
   onSelectArticle: (id: string) => void;
-  onOpenSearch: () => void;
   onToggleMobileNav: () => void;
 }
 
@@ -13,25 +12,24 @@ const TOP_NAV_ITEMS = [
   { id: 'quickstart', label: 'Quickstart' },
   { id: 'earning-loops', label: 'Earning Loops' },
   { id: 'payout-rails', label: 'Payouts' },
-  { id: 'api-reference', label: 'API Reference' },
+  { id: 'brand-mascot', label: 'Brand & FAQ' },
 ];
 
 export const TopBar: React.FC<TopBarProps> = ({
   activeArticleId,
   onSelectArticle,
-  onOpenSearch,
   onToggleMobileNav,
 }) => {
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b-2 border-[#0A1A3F]">
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-8 h-16 flex items-center justify-between gap-8">
+      <div className="max-w-[1440px] mx-auto px-3 sm:px-8 h-16 flex items-center justify-between gap-2 sm:gap-6 md:gap-8">
         {/* Zone 1: Brand Title (single line, clean wordmark) */}
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
           <button
             type="button"
             onClick={onToggleMobileNav}
             aria-label="Open documentation navigation"
-            className="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-lg border-2 border-[#0A1A3F] bg-[#F2F9FF] text-[#0A1A3F] hover:bg-[#E0F2FE] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1250E8]"
+            className="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-lg border-2 border-[#0A1A3F] bg-[#F2F9FF] text-[#0A1A3F] hover:bg-[#E0F2FE] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1250E8]"
           >
             <Menu className="w-5 h-5" />
           </button>
@@ -99,17 +97,15 @@ export const TopBar: React.FC<TopBarProps> = ({
 
         {/* Zone 3: 1 primary action */}
         <div className="shrink-0">
-          <button
-            type="button"
-            onClick={onOpenSearch}
-            className="comic-btn inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-[#1250E8] text-white text-sm font-semibold whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0A1A3F]"
+          <a
+            href="https://t.me/GrabGig_bot"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="comic-btn inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 min-h-[40px] rounded-xl bg-[#1250E8] text-white text-xs sm:text-sm font-semibold whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0A1A3F]"
           >
-            <Search className="w-4 h-4 shrink-0" aria-hidden="true" />
-            <span>Search Docs</span>
-            <kbd className="hidden sm:inline-block font-mono text-[11px] font-medium text-[#BAE6FD] border border-white/25 rounded px-1.5 py-0.5 leading-none">
-              ⌘K
-            </kbd>
-          </button>
+            <Send className="w-4 h-4 shrink-0" aria-hidden="true" />
+            <span>Open Bot</span>
+          </a>
         </div>
       </div>
     </header>

@@ -210,28 +210,6 @@ export const ChapterVectorArt: React.FC<{ chapterId: string; className?: string 
           />
         </svg>
       );
-    case 'api-reference':
-      return (
-        <svg viewBox="0 0 80 80" fill="none" className={className} aria-hidden="true">
-          <rect
-            x="10"
-            y="16"
-            width="60"
-            height="48"
-            rx="8"
-            fill="#0A1A3F"
-            stroke="#0A1A3F"
-            strokeWidth="3"
-          />
-          <path
-            d="M31 32L21 40L31 48M49 32L59 40L49 48M43 29L37 51"
-            stroke="#22D3EE"
-            strokeWidth="3.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      );
     case 'brand-mascot':
       return (
         <svg viewBox="0 0 80 80" fill="none" className={className} aria-hidden="true">
